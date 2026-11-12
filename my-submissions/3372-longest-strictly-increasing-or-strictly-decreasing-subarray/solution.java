@@ -6,6 +6,7 @@ class Solution {
         int currentIncreasing = 1;
         int currentDecreasing = 1;
 
+
         int prev = nums[0];
 
         for (int i = 0 ; i < nums.length; i ++){

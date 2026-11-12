@@ -11,10 +11,26 @@ jobs:
     permissions:
       contents: write
     steps:
-      - name: Sync
+      - name: Sync LeetCode Submissions
         uses: joshcai/leetcode-sync@v1.7
         with:
           github-token: ${{ secrets.AUTO_LEETCODE_TOKEN }}
           leetcode-csrf-token: ${{ secrets.LEETCODE_CSRF_TOKEN }}
           leetcode-session: ${{ secrets.LEETCODE_SESSION }}
           destination-folder: my-submissions
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.AUTO_LEETCODE_TOKEN }}
+
+      - name: Update README Table
+        run: python3 .github/scripts/organize.py
+
+      - name: Commit updated README
+        run: |
+          git config user.name "MidziOO"
+          git config user.email "bambidzioo7@gmail.com"
+          git add README.md
+          git diff --staged --quiet || git commit -m "Update README problem table and categories"
+          git push
